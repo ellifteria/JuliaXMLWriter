@@ -3,7 +3,6 @@ module XMLWriter
 # XMLWriter Internal Types 
 
 abstract type AbstractXmlNode end
-abstract type AbstractXmlDoc end
 
 Optional{T} = Union{T, Nothing}
 
@@ -18,32 +17,26 @@ mutable struct XmlNode <: AbstractXmlNode
   child_nodes::XMLChildren
 end
 
-mutable struct XmlDoc <: AbstractXmlDoc
-  doc_name::String
-  tags::XMLTags
-  child_nodes::XMLChildren
-end
-
 # XMLWriter Internal Helper Functions
 
-function xmldoc_has_tags(xmldoc::XmlDoc)
-  if isnothing(xmldoc.tags)
+function xmlnode_has_tags(xmlnode::XmlNode)
+  if isnothing(xmlnode.tags)
     return false
   end
 
-  if isempty(xmldoc.tags)
+  if isempty(xmlnode.tags)
     return false
   end
 
   return true
 end
 
-function xmldoc_has_children(xmldoc::XmlDoc)
-  if isnothing(xmldoc.child_nodes)
+function xmlnode_has_children(xmlnode::XmlNode)
+  if isnothing(xmlnode.child_nodes)
     return false
   end
 
-  if isempty(xmldoc.child_nodes)
+  if isempty(xmlnode.child_nodes)
     return false
   end
 
@@ -52,34 +45,32 @@ end
 
 # XMLWriter Exported Functions
 
-export xmlwriter_xmldoc_create,
-       xmlwriter_xmldoc_add_child!,
+export xmlwriter_xmlnode_create,
        xmlwriter_xmlnode_add_child!,
-       xmlwriter_xmldoc_add_tag!,
        xmlwriter_xmlnode_add_tag!,
-       xmlwriter_xmldoc_write
+       xmlwriter_xmlnode_write
 
-function xmlwriter_xmldoc_create(
-    doc_name::String,
+function xmlwriter_xmlnode_create(
+    name::String,
     tags::XMLTags=nothing,
     child_nodes::XMLChildren=nothing
   )
-  return XmlDoc(doc_name, tags, child_nodes)
+  return XmlNode(name, tags, child_nodes)
 end
 
-function xmlwriter_xmldoc_add_child!(
-    xmldoc::XmlDoc,
+function xmlwriter_xmlnode_add_child!(
+    xmlnode::XmlNode,
     child_name::String,
     tags::XMLTags=nothing,
     child_nodes::XMLChildren=nothing
   )
 
-  if isnothing(xmldoc.child_nodes)
-    xmldoc.child_nodes = Vector{XmlNode}()
+  if isnothing(xmlnode.child_nodes)
+    xmlnode.child_nodes = Vector{XmlNode}()
   end
 
   push!(
-        xmldoc.child_nodes,
+        xmlnode.child_nodes,
         XmlNode(
                 child_name,
                 tags,
@@ -93,15 +84,15 @@ function xmlwriter_xmlnode_add_tag!()
 end
 
 
-function xmlwriter_xmldoc_write(
+function xmlwriter_xmlnode_write(
     file_path::String,
-    xmldoc::XmlDoc
+    xmlnode::XmlNode
   )
   open(file_path, "w") do file
     write(file, "<")
-    write(file, xmldoc.doc_name)
+    write(file, xmlnode.name)
 
-    if xmldoc_has_children(xmldoc) == false
+    if xmlnode_has_children(xmlnode) == false
       write(file, "/>\n")
       return
     end
