@@ -1,0 +1,4 @@
+name = "XMLWriter"
+uuid = "8c5c219c-37b6-40b9-a624-5212da2a5c07"
+authors = ["Elli Beres <elliberes@proton.me>"]
+version = "0.1.0"

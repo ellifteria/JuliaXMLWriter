@@ -69,13 +69,12 @@ function xmlnode_write(
     return
   end
     
-  write(file, ">")
+  write(file, ">\n")
   for child in xmlnode.child_nodes
-    write(file, "\n")
     xmlnode_write(file, child, indent_size, indent_depth+1)
   end
 
-  write(file, "$(depth_indentation)</$(xmlnode.name)>")
+  write(file, "$(depth_indentation)</$(xmlnode.name)>\n")
 
 end
 
@@ -101,20 +100,24 @@ function xmlwriter_xmlnode_add_child!(
     child_name::String,
     tags::XMLTags=nothing,
     child_nodes::XMLChildren=nothing
-  )
+  )::XmlNode
 
   if isnothing(xmlnode.child_nodes)
     xmlnode.child_nodes = Vector{XmlNode}()
   end
 
+  new_child = XmlNode(
+                  child_name,
+                  tags,
+                  child_nodes
+  )
+  
   push!(
         xmlnode.child_nodes,
-        XmlNode(
-                child_name,
-                tags,
-                child_nodes
-        )
+        new_child
   )
+
+  return new_child
 
 end
 
@@ -125,7 +128,7 @@ function xmlwriter_xmlnode_add_tag!(
   )
 
   if isnothing(xmlnode.tags)
-    xmlnode.child_nodes = Dict{String, String}()
+    xmlnode.tags = Dict{String, String}()
   end
 
   xmlnode.tags[tag_name] = tag_value
@@ -140,7 +143,6 @@ function xmlwriter_xmlnode_write(
 
   open(file_path, "w") do file
     xmlnode_write(file, xmlnode)
-    write(file, "\n")
   end
 
 end

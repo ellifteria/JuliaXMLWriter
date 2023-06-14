@@ -1,6 +1,0 @@
-<test b=1.0 a="A">
-  <hello>
-    <hi />
-  </hello>
-  <hihihi c="C" />
-</test>
