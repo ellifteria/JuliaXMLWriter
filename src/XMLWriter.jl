@@ -1,5 +1,9 @@
 module XMLWriter
 
+# XMLWriter Constants
+
+STD_INDENT_SIZE = 2
+
 # XMLWriter Types 
 
 Optional{T} = Union{T, Nothing}
@@ -46,10 +50,13 @@ end
 
 function xmlnode_write(
     file::IOStream,
-    xmlnode::XmlNode
+    xmlnode::XmlNode,
+    indent_size::Int64=STD_INDENT_SIZE,
+    indent_depth::Int64=0
   )
 
-  write(file, "<$(xmlnode.name)")
+  depth_indentation = (" " ^ indent_size)^indent_depth
+  write(file, "$(depth_indentation)<$(xmlnode.name)")
 
   if xmlnode_has_tags(xmlnode)
     for (key, value) in xmlnode.tags
@@ -65,10 +72,10 @@ function xmlnode_write(
   write(file, ">")
   for child in xmlnode.child_nodes
     write(file, "\n")
-    xmlnode_write(file, child)
+    xmlnode_write(file, child, indent_size, indent_depth+1)
   end
 
-  write(file, "</$(xmlnode.name)>\n")
+  write(file, "$(depth_indentation)</$(xmlnode.name)>")
 
 end
 
@@ -133,6 +140,7 @@ function xmlwriter_xmlnode_write(
 
   open(file_path, "w") do file
     xmlnode_write(file, xmlnode)
+    write(file, "\n")
   end
 
 end
