@@ -10,7 +10,7 @@ xmlwriter_xmlnode_add_child!(A, "hi")
 
 println(A.child_nodes[1].name)
 
-B = xmlwriter_xmlnode_create("test")
+B = xmlwriter_xmlnode_create("test", Dict("a"=>"\"A\""), [A])
 
 xmlwriter_xmlnode_write("test.xml", B)
 
