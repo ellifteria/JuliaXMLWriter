@@ -6,17 +6,25 @@ STD_INDENT_SIZE = 2
 
 # XMLWriter Types 
 
+export AbstractXmlPreamble,
+       AbstractXmlNode,
+       XmlPreamble,
+       XmlNode
+
+abstract type AbstractXmlPreamble end
+abstract type AbstractXmlNode end
+
 Optional{T} = Union{T, Nothing}
 
 XMLTags = Optional{Dict{String,String}}
 
-mutable struct XmlPreamble
+mutable struct XmlPreamble <: AbstractXmlPreamble
   version::String
   encoding::Optional{String}
   standalone::Optional{String}
 end
 
-mutable struct XmlNode 
+mutable struct XmlNode <: AbstractXmlNode 
   name::String
   tags::XMLTags
   child_nodes::Optional{Vector{XmlNode}}
