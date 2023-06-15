@@ -71,7 +71,7 @@ function xmlnode_write(
   end
 
   if xmlnode_has_children(xmlnode) == false
-    write(file, " />\n")
+    write(file, "/>\n")
     return
   end
     
