@@ -181,9 +181,8 @@ function xmlwriter_xmlnode_write(
   open(file_path, "w") do file
     if isnothing(xmlpreamble) == false
       xmlpreamble_write(file, xmlpreamble)
+      write(file, "\n")
     end
-
-    write(file, "\n")
 
     xmlnode_write(file, xmlnode)
   end
