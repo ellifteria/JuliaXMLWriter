@@ -25,10 +25,10 @@ xmlwriter_xmlnode_write("./test-files/my_file.xml", document, preamble)
 ```xml
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <document name="my_document">
-  <child1 />
+  <child1/>
   <child2>
     <child4 b=1.0 a="A">
-      <child3 />
+      <child3/>
     </child4>
   </child2>
 </document>
