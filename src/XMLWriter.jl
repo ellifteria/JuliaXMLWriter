@@ -133,6 +133,22 @@ end
 
 function xmlwriter_xmlnode_add_child!(
     xmlnode::XmlNode,
+    child::XmlNode
+  )
+
+  if isnothing(xmlnode.child_nodes)
+    xmlnode.child_nodes = Vector{XmlNode}()
+  end
+
+  push!(
+        xmlnode.child_nodes,
+        child
+  )
+
+end
+
+function xmlwriter_xmlnode_add_child!(
+    xmlnode::XmlNode,
     child_name::String,
     tags::XMLTags=nothing,
     child_nodes::XMLChildren=nothing

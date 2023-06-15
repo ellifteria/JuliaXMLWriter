@@ -2,7 +2,7 @@
 
 ## Usage
 
-```text
+```julia
 document = xmlwriter_xmlnode_create("document")
 
 xmlwriter_xmlnode_add_tag!(document, "name", "\"my_document\"")
@@ -15,9 +15,14 @@ child3 = xmlwriter_xmlnode_create("child3")
 
 child4 = xmlwriter_xmlnode_add_child!(child2, "child4", Dict("a"=>"\"A\"", "b" =>"1.0"), [child3])
 
+child5 = xmlwriter_xmlnode_create("child5")
+
+xmlwriter_xmlnode_add_child!(child4, child5)
+
 preamble = xmlwriter_xmlpreamble_create("1.0", "utf-8", "yes")
 
 xmlwriter_xmlnode_write("./test-files/my_file.xml", document, preamble)
+
 ```
 
 ### Output
@@ -29,8 +34,9 @@ xmlwriter_xmlnode_write("./test-files/my_file.xml", document, preamble)
   <child2>
     <child4 b=1.0 a="A">
       <child3/>
+      <child5/>
     </child4>
   </child2>
 </document>
-
 ```
+
