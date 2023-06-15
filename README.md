@@ -1,6 +1,4 @@
-# XMLWriter
-
-## Elli's Julia Tools
+# XMLWriter | Elli's Julia Tools
 
 ---
 
