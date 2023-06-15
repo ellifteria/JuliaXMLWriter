@@ -20,3 +20,17 @@ preamble = xmlwriter_xmlpreamble_create("1.0", "utf-8", "yes")
 xmlwriter_xmlnode_write("./test-files/my_file.xml", document, preamble)
 ```
 
+### Output
+
+```xml
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<document name="my_document">
+  <child1 />
+  <child2>
+    <child4 b=1.0 a="A">
+      <child3 />
+    </child4>
+  </child2>
+</document>
+
+```
