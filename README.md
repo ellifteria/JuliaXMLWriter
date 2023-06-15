@@ -1,7 +1,5 @@
 # XMLWriter | Elli's Julia Tools
 
----
-
 ## Usage
 
 ```text
