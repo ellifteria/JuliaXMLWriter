@@ -1,8 +1,0 @@
-<document name="my_document">
-  <child1 />
-  <child2>
-    <child4 b=1.0 a="A">
-      <child3 />
-    </child4>
-  </child2>
-</document>
