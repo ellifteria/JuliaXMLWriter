@@ -10,6 +10,12 @@ Optional{T} = Union{T, Nothing}
 
 XMLTags = Optional{Dict{String,String}}
 
+mutable struct XmlPreamble
+  version::String
+  encoding::Optional{String}
+  standalone::Optional{String}
+end
+
 mutable struct XmlNode 
   name::String
   tags::XMLTags
@@ -78,12 +84,34 @@ function xmlnode_write(
 
 end
 
+function xmlpreamble_write(
+    file::IOStream,
+    xmlpreamble::XmlPreamble
+  )
+  
+  write(file, "<?xml ")
+  
+  write(file, "version=\"$(xmlpreamble.version)\" ")
+
+  if isnothing(xmlpreamble.encoding) == false
+    write(file, "encoding=\"$(xmlpreamble.encoding)\" ")
+  end
+
+  if isnothing(xmlpreamble.standalone) == false
+    write(file, "standalone=\"$(xmlpreamble.standalone)\"")
+  end
+
+  write(file, "?>")
+
+end
+
 # XMLWriter Exported Functions
 
 export xmlwriter_xmlnode_create,
        xmlwriter_xmlnode_add_child!,
        xmlwriter_xmlnode_add_tag!,
-       xmlwriter_xmlnode_write
+       xmlwriter_xmlnode_write,
+       xmlwriter_xmlpreamble_create
 
 function xmlwriter_xmlnode_create(
     name::String,
@@ -138,12 +166,29 @@ end
 
 function xmlwriter_xmlnode_write(
     file_path::String,
-    xmlnode::XmlNode
+    xmlnode::XmlNode,
+    xmlpreamble::Optional{XmlPreamble}=nothing
   )
 
   open(file_path, "w") do file
+    if isnothing(xmlpreamble) == false
+      xmlpreamble_write(file, xmlpreamble)
+    end
+
+    write(file, "\n")
+
     xmlnode_write(file, xmlnode)
   end
+
+end
+
+function xmlwriter_xmlpreamble_create(
+    version::String="1.0",
+    encoding::Optional{String}=nothing,
+    standalone::Optional{String}=nothing
+  )
+  
+  return XmlPreamble(version, encoding, standalone)
 
 end
 
