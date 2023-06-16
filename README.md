@@ -3,6 +3,9 @@
 ## Usage
 
 ```julia
+include("~/.../XMLWriter.jl")
+using .XMLWriter
+
 document = xmlwriter_xmlnode_create("document")
 
 xmlwriter_xmlnode_add_tag!(document, "name", "\"my_document\"")
