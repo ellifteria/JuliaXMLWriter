@@ -34,7 +34,7 @@ XMLChildren = Optional{Vector{XmlNode}}
 
 # XMLWriter Internal Helper Functions
 
-function xmlnode_has_tags(xmlnode::XmlNode)
+function xmlnode_hastags(xmlnode::XmlNode)
 
   if isnothing(xmlnode.tags)
     return false
@@ -48,7 +48,7 @@ function xmlnode_has_tags(xmlnode::XmlNode)
 
 end
 
-function xmlnode_has_children(xmlnode::XmlNode)
+function xmlnode_haschildren(xmlnode::XmlNode)
 
   if isnothing(xmlnode.child_nodes)
     return false
@@ -72,13 +72,13 @@ function xmlnode_write(
   depth_indentation = (" " ^ indent_size)^indent_depth
   write(file, "$(depth_indentation)<$(xmlnode.name)")
 
-  if xmlnode_has_tags(xmlnode)
+  if xmlnode_hastags(xmlnode)
     for (key, value) in xmlnode.tags
       write(file, " $(key)=$(value)")
     end
   end
 
-  if xmlnode_has_children(xmlnode) == false
+  if xmlnode_haschildren(xmlnode) == false
     write(file, "/>\n")
     return
   end
@@ -116,8 +116,8 @@ end
 # XMLWriter Exported Functions
 
 export xmlwriter_xmlnode_create,
-       xmlwriter_xmlnode_add_child!,
-       xmlwriter_xmlnode_add_tag!,
+       xmlwriter_xmlnode_addchild!,
+       xmlwriter_xmlnode_addtag!,
        xmlwriter_xmlnode_write,
        xmlwriter_xmlpreamble_create
 
@@ -131,7 +131,7 @@ function xmlwriter_xmlnode_create(
 
 end
 
-function xmlwriter_xmlnode_add_child!(
+function xmlwriter_xmlnode_addchild!(
     xmlnode::XmlNode,
     child::XmlNode
   )
@@ -147,7 +147,7 @@ function xmlwriter_xmlnode_add_child!(
 
 end
 
-function xmlwriter_xmlnode_add_child!(
+function xmlwriter_xmlnode_addchild!(
     xmlnode::XmlNode,
     child_name::String,
     tags::XMLTags=nothing,
@@ -173,7 +173,7 @@ function xmlwriter_xmlnode_add_child!(
 
 end
 
-function xmlwriter_xmlnode_add_tag!(
+function xmlwriter_xmlnode_addtag!(
     xmlnode::XmlNode,
     tag_name::String,
     tag_value::String
