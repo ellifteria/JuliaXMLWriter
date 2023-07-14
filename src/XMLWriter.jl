@@ -125,7 +125,7 @@ function xmlwriter_xmlnode_create(
     name::String,
     tags::XMLTags=nothing,
     child_nodes::XMLChildren=nothing
-  )
+  )::XmlNode
 
   return XmlNode(name, tags, child_nodes)
 
